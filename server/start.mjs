@@ -87,7 +87,8 @@ async function runProxy(request, response, { build, maxBytes, kind }) {
 
   try {
     const upstream = build(JSON.stringify(payload), process.env);
-    const result = await fetch(upstream.url, { ...upstream.init, signal: AbortSignal.timeout(65_000) });
+    const timeoutMs = kind === "vision" ? 150_000 : 65_000;
+    const result = await fetch(upstream.url, { ...upstream.init, signal: AbortSignal.timeout(timeoutMs) });
     if (!result.ok) {
       console.error("[shuoguo-ai]", result.status);
       if (kind === "vision" && result.status === 403) {
