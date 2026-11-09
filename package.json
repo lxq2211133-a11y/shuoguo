@@ -1,0 +1,31 @@
+{
+  "name": "design-kaoyan-platform",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1 --port 5174",
+    "build": "tsc -b && vite build",
+    "start": "node --env-file-if-exists=.env.local server/start.mjs",
+    "embed:cases": "node scripts/embedCritiqueCases.mjs",
+    "embed:cases:dry": "node scripts/embedCritiqueCases.mjs --dry-run",
+    "test": "vitest run",
+    "preview": "vite preview --host 127.0.0.1 --port 5174"
+  },
+  "dependencies": {
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^5.1.0",
+    "lucide-react": "^0.561.0",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3",
+    "typescript": "^5.9.3",
+    "vite": "^7.2.6"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "jsdom": "^29.1.1",
+    "vitest": "^4.1.5"
+  }
+}
