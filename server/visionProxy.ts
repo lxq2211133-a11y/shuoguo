@@ -38,10 +38,18 @@ export function buildUpstreamVisionRequest(rawBody: string, env: VisionProxyEnv)
   }
 
   const body = JSON.parse(rawBody) as Record<string, unknown>;
-  const upstreamBody = {
+  const upstreamBody: Record<string, unknown> = {
     ...body,
     model: config.model,
   };
+  const officialDashScope = /^https:\/\/dashscope(?:-intl)?\.aliyuncs\.com(?:\/|$)/i.test(config.apiBaseUrl);
+  if (officialDashScope && /^qwen3\.7-plus(?:-\d{4}-\d{2}-\d{2})?$/.test(config.model)) {
+    upstreamBody.enable_thinking = false;
+    if (Array.isArray(body.messages) && body.messages.some((message) =>
+      message?.role === "system" && typeof message.content === "string" && /\bJSON\b/i.test(message.content))) {
+      upstreamBody.response_format = { type: "json_object" };
+    }
+  }
 
   return {
     url: `${config.apiBaseUrl.replace(/\/$/, "")}/chat/completions`,
